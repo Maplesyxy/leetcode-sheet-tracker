@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>LeetCode Sheet Tracker</title>
+<style>
+  :root { color-scheme: light dark; }
+  body { width: 300px; margin: 0; padding: 14px; font: 13px/1.4 system-ui, -apple-system, sans-serif; }
+  h1 { font-size: 14px; margin: 0 0 10px; display: flex; align-items: center; gap: 8px; }
+  .dot { width: 9px; height: 9px; border-radius: 50%; background: #9ca3af; display: inline-block; }
+  .dot.on { background: #16a34a; }
+  .card { border: 1px solid rgba(127,127,127,.3); border-radius: 8px; padding: 10px; margin-bottom: 10px; }
+  .big { font-size: 22px; font-weight: 600; }
+  .muted { opacity: .7; }
+  .row { display: flex; justify-content: space-between; gap: 8px; margin: 3px 0; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; text-align: center; margin-top: 8px; }
+  .grid div { border-radius: 6px; padding: 6px 2px; background: rgba(127,127,127,.12); }
+  .grid b { display: block; font-size: 16px; }
+  .err { color: #dc2626; font-size: 12px; margin-top: 6px; }
+  .warn { color: #d97706; font-size: 12px; margin-top: 6px; }
+  .ok { color: #16a34a; }
+  .bad { color: #dc2626; }
+  .actions { display: flex; gap: 6px; flex-wrap: wrap; }
+  button, a.btn { flex: 1; cursor: pointer; padding: 6px 8px; border-radius: 6px; border: 1px solid rgba(127,127,127,.4);
+    background: transparent; color: inherit; font: inherit; text-align: center; text-decoration: none; }
+  button:hover, a.btn:hover { background: rgba(127,127,127,.12); }
+  .ellipsis { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 180px; }
+</style>
+</head>
+<body>
+  <h1><span class="dot" id="dot"></span> LeetCode Sheet Tracker</h1>
+
+  <div class="card">
+    <div class="row"><span class="muted">Session</span><span id="sessionState" class="muted">—</span></div>
+    <div class="big" id="elapsed">0m</div>
+    <div class="row"><span class="muted">Active time</span><span id="active">0m</span></div>
+    <div class="grid">
+      <div><b id="attempted">0</b>attempted</div>
+      <div><b id="solved">0</b>solved</div>
+      <div><b id="subs">0</b>submits</div>
+    </div>
+  </div>
+
+  <div class="card" id="problemCard" hidden>
+    <div class="row"><span class="muted">Current problem</span><span id="probStatus"></span></div>
+    <div class="ellipsis" id="probTitle"></div>
+    <div class="row"><span class="muted">Time on it</span><span id="probTime"></span></div>
+  </div>
+
+  <div class="card">
+    <div class="row"><span class="muted">Last logged</span><span id="lastAttempt" class="ellipsis">—</span></div>
+    <div class="row"><span class="muted">Last session</span><span id="lastSession" class="ellipsis">—</span></div>
+    <div id="queue" class="warn" hidden></div>
+    <div id="error" class="err" hidden></div>
+  </div>
+
+  <div class="actions">
+    <a class="btn" id="openSheet" target="_blank" hidden>Open sheet</a>
+    <button id="endSession" hidden>End session</button>
+    <button id="retry" hidden>Retry sending</button>
+    <button id="options">Settings</button>
+  </div>
+
+  <script src="common.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

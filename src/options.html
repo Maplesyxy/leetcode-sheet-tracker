@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>LeetCode Sheet Tracker — Settings</title>
+<style>
+  :root { color-scheme: light dark; }
+  body { max-width: 760px; margin: 0 auto; padding: 24px 20px 60px; font: 14px/1.5 system-ui, -apple-system, sans-serif; }
+  h1 { font-size: 22px; margin: 0 0 4px; }
+  h2 { font-size: 16px; margin: 28px 0 10px; padding-bottom: 6px; border-bottom: 1px solid rgba(127,127,127,.3); }
+  label { display: block; font-weight: 600; margin: 14px 0 4px; }
+  input[type=text], input[type=url], input[type=number] { width: 100%; box-sizing: border-box; padding: 8px 10px; border-radius: 6px;
+    border: 1px solid rgba(127,127,127,.4); background: transparent; color: inherit; font: inherit; }
+  input[type=number] { width: 120px; }
+  .hint { opacity: .7; font-size: 13px; margin-top: 4px; }
+  button { cursor: pointer; padding: 7px 14px; border-radius: 6px; border: 1px solid rgba(127,127,127,.4);
+    background: transparent; color: inherit; font: inherit; }
+  button.primary { background: #16a34a; border-color: #16a34a; color: #fff; }
+  button:hover { filter: brightness(1.1); }
+  .row { display: flex; gap: 8px; align-items: center; margin-top: 12px; flex-wrap: wrap; }
+  .status { font-size: 13px; }
+  .ok { color: #16a34a; } .bad { color: #dc2626; }
+  ol li { margin: 6px 0; }
+  pre { position: relative; max-height: 320px; overflow: auto; padding: 12px; border-radius: 8px; font-size: 12px;
+    background: rgba(127,127,127,.12); }
+  .codebar { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; }
+  kbd { padding: 1px 5px; border: 1px solid rgba(127,127,127,.5); border-radius: 4px; font-size: 12px; }
+</style>
+</head>
+<body>
+  <h1>LeetCode Sheet Tracker</h1>
+  <div class="hint">Tracking turns on automatically whenever a leetcode.com tab is open. Nothing to toggle.</div>
+
+  <h2>1. Connect your Google Sheet</h2>
+  <ol>
+    <li>Open (or create) the Google Sheet you want to log to.</li>
+    <li>In the sheet, go to <b>Extensions → Apps Script</b>. Delete the sample code.</li>
+    <li>Copy the script below (button on the right) and paste it into the editor. Save (<kbd>⌘S</kbd>).</li>
+    <li>Click <b>Deploy → New deployment</b>. Click the gear next to "Select type" and choose <b>Web app</b>.</li>
+    <li>Set <b>Execute as: Me</b> and <b>Who has access: Anyone</b>. Click Deploy and authorize when asked
+      (click "Advanced → Go to … (unsafe)" if Google warns; it's your own script).</li>
+    <li>Copy the <b>Web app URL</b> (ends in <code>/exec</code>) and paste it below, then press <b>Test connection</b>.</li>
+  </ol>
+
+  <div class="codebar">
+    <span class="hint">Apps Script code (apps-script/Code.gs)</span>
+    <button id="copyCode">Copy script</button>
+  </div>
+  <pre id="code">Loading…</pre>
+
+  <label for="scriptUrl">Apps Script Web app URL</label>
+  <input type="url" id="scriptUrl" placeholder="https://script.google.com/macros/s/…/exec">
+
+  <label for="sheetUrl">Google Sheet link (optional, for the "Open sheet" button)</label>
+  <input type="url" id="sheetUrl" placeholder="https://docs.google.com/spreadsheets/d/…">
+
+  <div class="row">
+    <button id="test">Test connection</button>
+    <button id="testRow">Send a test row</button>
+    <span class="status" id="connStatus"></span>
+  </div>
+
+  <h2>2. Session behavior</h2>
+  <label for="idleMinutes">End a session after this many minutes away from LeetCode</label>
+  <input type="number" id="idleMinutes" min="2" max="120">
+  <div class="hint">A "session" starts when you open a problem and ends after this much inactivity or when you close the tabs.
+    Its total length and what you solved get written to the <b>Sessions</b> sheet.</div>
+
+  <div class="row">
+    <button class="primary" id="save">Save settings</button>
+    <span class="status" id="saveStatus"></span>
+  </div>
+
+  <h2>3. What gets written</h2>
+  <ul>
+    <li><b>Problems</b> — one row per problem, updated on every Submit: status, attempts, attempts-to-solve, total minutes, first/solved/last dates, plus the latest submission's result, pass/fail, language, tests passed, runtime, memory and submission id.</li>
+    <li><b>Sessions</b> — one row per sitting: start, end, duration, active minutes, problems attempted/solved, topics covered.</li>
+    <li><b>Weak Areas</b> — one row per topic ranked by a struggle score (unsolved share, attempts per problem) with a verdict and the unsolved problems to revisit.</li>
+  </ul>
+  <div class="hint">If the sheet is unreachable, rows are kept locally and retried every few minutes. "Run" (test) executions are not logged, only real Submits.</div>
+
+  <script src="common.js"></script>
+  <script src="options.js"></script>
+</body>
+</html>
